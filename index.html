@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AB 스케일-시간(z) 승격 시뮬레이터</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="title">AB 스케일-시간(z) 승격 · 분기(반대 chirality) 시뮬</div>
+      <div class="hint">
+        드래그로 주입(브러시) · 슬라이더로 파라미터 조정 · 폭주 직전(u↑)에 z↑ 및 A/B 반대 회전이 나타나는지 관찰
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <div class="row">
+          <button id="btnToggle">일시정지</button>
+          <button id="btnStep">1스텝</button>
+          <button id="btnReset">리셋</button>
+          <button id="btnRandomize">랜덤화</button>
+        </div>
+
+        <div class="row">
+          <label class="label">표시</label>
+          <select id="viewField">
+            <option value="u">u(발산 위험)</option>
+            <option value="z">z(스케일/시간축)</option>
+            <option value="s">s(정렬도)</option>
+            <option value="m">m(세기 유사)</option>
+            <option value="g">g(국소 성장)</option>
+            <option value="dot">A·B</option>
+            <option value="aMag">|A|</option>
+            <option value="bMag">|B|</option>
+          </select>
+
+          <label class="checkbox">
+            <input id="showVectors" type="checkbox" checked />
+            벡터 표시
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="label">승격 모드</label>
+          <select id="mode">
+            <option value="timeSlow">옵션 A: Δt_eff = Δt·e^{-βz}</option>
+            <option value="kernelScale">옵션 B: 확산(D) = D·e^{βz}</option>
+            <option value="both">A+B 동시에</option>
+          </select>
+        </div>
+
+        <div class="grid">
+          <div class="groupTitle">시뮬</div>
+          <div class="control" data-key="stepsPerFrame" data-min="1" data-max="20" data-step="1" data-value="4">
+            <div class="name">프레임당 스텝</div>
+          </div>
+          <div class="control" data-key="dt" data-min="0.01" data-max="1.0" data-step="0.01" data-value="0.2">
+            <div class="name">Δt</div>
+          </div>
+          <div class="control" data-key="diff" data-min="0.0" data-max="2.0" data-step="0.01" data-value="0.25">
+            <div class="name">확산 D</div>
+          </div>
+          <div class="control" data-key="noise" data-min="0.0" data-max="0.2" data-step="0.001" data-value="0.02">
+            <div class="name">노이즈</div>
+          </div>
+          <div class="control" data-key="maxNorm" data-min="0.5" data-max="20" data-step="0.1" data-value="8">
+            <div class="name">최대 |A|,|B| 클램프</div>
+          </div>
+
+          <div class="groupTitle">폭주/승격(u,z)</div>
+          <div class="control" data-key="growthK" data-min="0.0" data-max="3.0" data-step="0.01" data-value="1.1">
+            <div class="name">성장 k_g (A·B)</div>
+          </div>
+          <div class="control" data-key="linearDamp" data-min="0.0" data-max="3.0" data-step="0.01" data-value="0.35">
+            <div class="name">선형 감쇠</div>
+          </div>
+          <div class="control" data-key="nonlinearDamp" data-min="0.0" data-max="1.0" data-step="0.001" data-value="0.03">
+            <div class="name">비선형 감쇠(|A|²,|B|²)</div>
+          </div>
+          <div class="control" data-key="ku" data-min="0.0" data-max="10.0" data-step="0.01" data-value="2.2">
+            <div class="name">k_u (z 상승)</div>
+          </div>
+          <div class="control" data-key="lambdaZ" data-min="0.0" data-max="5.0" data-step="0.01" data-value="0.8">
+            <div class="name">λ (z 복귀)</div>
+          </div>
+          <div class="control" data-key="beta" data-min="0.0" data-max="6.0" data-step="0.01" data-value="1.6">
+            <div class="name">β (스케일-시간 강도)</div>
+          </div>
+          <div class="control" data-key="eta" data-min="0.0" data-max="10.0" data-step="0.01" data-value="2.5">
+            <div class="name">η (반대 회전/분기)</div>
+          </div>
+
+          <div class="groupTitle">u 트리거(θ,α,g_c)</div>
+          <div class="control" data-key="thetaS" data-min="-1.0" data-max="1.0" data-step="0.01" data-value="0.8">
+            <div class="name">θ_s (정렬 임계)</div>
+          </div>
+          <div class="control" data-key="thetaM" data-min="0.0" data-max="1.0" data-step="0.01" data-value="0.85">
+            <div class="name">θ_m (세기 유사 임계)</div>
+          </div>
+          <div class="control" data-key="gc" data-min="-2.0" data-max="2.0" data-step="0.01" data-value="0.35">
+            <div class="name">g_c (성장 임계)</div>
+          </div>
+          <div class="control" data-key="alphaS" data-min="0.0" data-max="30.0" data-step="0.1" data-value="8">
+            <div class="name">α_s</div>
+          </div>
+          <div class="control" data-key="alphaM" data-min="0.0" data-max="30.0" data-step="0.1" data-value="10">
+            <div class="name">α_m</div>
+          </div>
+          <div class="control" data-key="alphaG" data-min="0.0" data-max="30.0" data-step="0.1" data-value="8">
+            <div class="name">α_g</div>
+          </div>
+
+          <div class="groupTitle">브러시(드래그)</div>
+          <div class="row compact">
+            <label class="label">주입 타입</label>
+            <select id="brushType">
+              <option value="alignedVortex">AB 정렬 소용돌이(같은 chirality)</option>
+              <option value="oppositeVortex">AB 반대 소용돌이(반대 chirality)</option>
+              <option value="alignLine">AB 정렬(직선)</option>
+            </select>
+          </div>
+          <div class="control" data-key="brushRadius" data-min="2" data-max="40" data-step="1" data-value="14">
+            <div class="name">반경</div>
+          </div>
+          <div class="control" data-key="brushStrength" data-min="0.0" data-max="5.0" data-step="0.01" data-value="1.2">
+            <div class="name">세기</div>
+          </div>
+        </div>
+
+        <div class="stats" id="stats"></div>
+      </section>
+
+      <section class="canvasWrap">
+        <canvas id="sim" width="160" height="160"></canvas>
+        <div class="canvasNote">
+          팁: η를 키우면 “승격 후 분기”가 더 잘 보이고, β를 키우면 “승격(완화)”이 강해집니다.
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
