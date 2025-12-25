@@ -5,7 +5,7 @@
   --muted: #89a0b7;
   --text: #e7eef7;
   --border: #1f2a3a;
-  --accent: #66a3ff;
+  --accent: #5d86c9;
 }
 
 * {
@@ -74,6 +74,16 @@ body {
 
 button,
 select {
+  background: #0c1522;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+input.num {
+  width: 88px;
   background: #0c1522;
   border: 1px solid var(--border);
   color: var(--text);

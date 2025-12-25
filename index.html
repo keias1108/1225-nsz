@@ -43,6 +43,24 @@
         </div>
 
         <div class="row">
+          <label class="label">레이아웃</label>
+          <select id="viewLayout">
+            <option value="quad">4분할(u/z/s/A·B) (추천)</option>
+            <option value="single">단일(선택한 표시만)</option>
+          </select>
+
+          <label class="checkbox">
+            <input id="autoPause" type="checkbox" checked />
+            u 이벤트에서 자동 멈춤
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="label">이벤트 임계 u≥</label>
+          <input id="uPauseThreshold" type="number" min="0" max="1" step="0.01" value="0.92" class="num" />
+        </div>
+
+        <div class="row">
           <label class="label">승격 모드</label>
           <select id="mode">
             <option value="timeSlow">옵션 A: Δt_eff = Δt·e^{-βz}</option>
@@ -53,62 +71,62 @@
 
         <div class="grid">
           <div class="groupTitle">시뮬</div>
-          <div class="control" data-key="stepsPerFrame" data-min="1" data-max="20" data-step="1" data-value="4">
+          <div class="control" data-key="stepsPerFrame" data-min="1" data-max="20" data-step="1" data-value="1">
             <div class="name">프레임당 스텝</div>
           </div>
-          <div class="control" data-key="dt" data-min="0.01" data-max="1.0" data-step="0.01" data-value="0.2">
+          <div class="control" data-key="dt" data-min="0.01" data-max="1.0" data-step="0.01" data-value="0.06">
             <div class="name">Δt</div>
           </div>
-          <div class="control" data-key="diff" data-min="0.0" data-max="2.0" data-step="0.01" data-value="0.25">
+          <div class="control" data-key="diff" data-min="0.0" data-max="2.0" data-step="0.01" data-value="0.82">
             <div class="name">확산 D</div>
           </div>
-          <div class="control" data-key="noise" data-min="0.0" data-max="0.2" data-step="0.001" data-value="0.02">
+          <div class="control" data-key="noise" data-min="0.0" data-max="0.2" data-step="0.001" data-value="0.001">
             <div class="name">노이즈</div>
           </div>
-          <div class="control" data-key="maxNorm" data-min="0.5" data-max="20" data-step="0.1" data-value="8">
+          <div class="control" data-key="maxNorm" data-min="0.5" data-max="20" data-step="0.1" data-value="0.5">
             <div class="name">최대 |A|,|B| 클램프</div>
           </div>
 
           <div class="groupTitle">폭주/승격(u,z)</div>
-          <div class="control" data-key="growthK" data-min="0.0" data-max="3.0" data-step="0.01" data-value="1.1">
+          <div class="control" data-key="growthK" data-min="0.0" data-max="3.0" data-step="0.01" data-value="1.43">
             <div class="name">성장 k_g (A·B)</div>
           </div>
-          <div class="control" data-key="linearDamp" data-min="0.0" data-max="3.0" data-step="0.01" data-value="0.35">
+          <div class="control" data-key="linearDamp" data-min="0.0" data-max="3.0" data-step="0.01" data-value="1.44">
             <div class="name">선형 감쇠</div>
           </div>
-          <div class="control" data-key="nonlinearDamp" data-min="0.0" data-max="1.0" data-step="0.001" data-value="0.03">
+          <div class="control" data-key="nonlinearDamp" data-min="0.0" data-max="1.0" data-step="0.001" data-value="0.489">
             <div class="name">비선형 감쇠(|A|²,|B|²)</div>
           </div>
-          <div class="control" data-key="ku" data-min="0.0" data-max="10.0" data-step="0.01" data-value="2.2">
+          <div class="control" data-key="ku" data-min="0.0" data-max="10.0" data-step="0.01" data-value="4.79">
             <div class="name">k_u (z 상승)</div>
           </div>
-          <div class="control" data-key="lambdaZ" data-min="0.0" data-max="5.0" data-step="0.01" data-value="0.8">
+          <div class="control" data-key="lambdaZ" data-min="0.0" data-max="5.0" data-step="0.01" data-value="2.38">
             <div class="name">λ (z 복귀)</div>
           </div>
-          <div class="control" data-key="beta" data-min="0.0" data-max="6.0" data-step="0.01" data-value="1.6">
+          <div class="control" data-key="beta" data-min="0.0" data-max="6.0" data-step="0.01" data-value="2.81">
             <div class="name">β (스케일-시간 강도)</div>
           </div>
-          <div class="control" data-key="eta" data-min="0.0" data-max="10.0" data-step="0.01" data-value="2.5">
+          <div class="control" data-key="eta" data-min="0.0" data-max="10.0" data-step="0.01" data-value="4.79">
             <div class="name">η (반대 회전/분기)</div>
           </div>
 
           <div class="groupTitle">u 트리거(θ,α,g_c)</div>
-          <div class="control" data-key="thetaS" data-min="-1.0" data-max="1.0" data-step="0.01" data-value="0.8">
+          <div class="control" data-key="thetaS" data-min="-1.0" data-max="1.0" data-step="0.01" data-value="-0.04">
             <div class="name">θ_s (정렬 임계)</div>
           </div>
-          <div class="control" data-key="thetaM" data-min="0.0" data-max="1.0" data-step="0.01" data-value="0.85">
+          <div class="control" data-key="thetaM" data-min="0.0" data-max="1.0" data-step="0.01" data-value="0.48">
             <div class="name">θ_m (세기 유사 임계)</div>
           </div>
-          <div class="control" data-key="gc" data-min="-2.0" data-max="2.0" data-step="0.01" data-value="0.35">
+          <div class="control" data-key="gc" data-min="-2.0" data-max="2.0" data-step="0.01" data-value="0">
             <div class="name">g_c (성장 임계)</div>
           </div>
-          <div class="control" data-key="alphaS" data-min="0.0" data-max="30.0" data-step="0.1" data-value="8">
+          <div class="control" data-key="alphaS" data-min="0.0" data-max="30.0" data-step="0.1" data-value="14.5">
             <div class="name">α_s</div>
           </div>
-          <div class="control" data-key="alphaM" data-min="0.0" data-max="30.0" data-step="0.1" data-value="10">
+          <div class="control" data-key="alphaM" data-min="0.0" data-max="30.0" data-step="0.1" data-value="15.7">
             <div class="name">α_m</div>
           </div>
-          <div class="control" data-key="alphaG" data-min="0.0" data-max="30.0" data-step="0.1" data-value="8">
+          <div class="control" data-key="alphaG" data-min="0.0" data-max="30.0" data-step="0.1" data-value="14.1">
             <div class="name">α_g</div>
           </div>
 
@@ -121,10 +139,10 @@
               <option value="alignLine">AB 정렬(직선)</option>
             </select>
           </div>
-          <div class="control" data-key="brushRadius" data-min="2" data-max="40" data-step="1" data-value="14">
+          <div class="control" data-key="brushRadius" data-min="2" data-max="40" data-step="1" data-value="40">
             <div class="name">반경</div>
           </div>
-          <div class="control" data-key="brushStrength" data-min="0.0" data-max="5.0" data-step="0.01" data-value="1.2">
+          <div class="control" data-key="brushStrength" data-min="0.0" data-max="5.0" data-step="0.01" data-value="5">
             <div class="name">세기</div>
           </div>
         </div>
